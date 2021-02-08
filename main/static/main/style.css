@@ -1,0 +1,18 @@
+body {
+  font-family: "Sofia", sans-serif;
+  background-color: #44484c;
+}
+
+h1 {
+  color: white;
+  text-align: center;
+  font-size: 500%;
+}
+
+h1 .h1color-success {
+  color: rgb(0, 198, 0);
+}
+
+h1 .h1color-danger {
+  color: red;
+}
