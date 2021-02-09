@@ -6,9 +6,9 @@ from time import strftime
 from django.utils import timezone
 from django.conf import settings
 import os
-
 from multiprocessing import Process, Queue
 
+# Initializing the chromedriver
 chrome_options = webdriver.ChromeOptions()
 if not settings.DEBUG:
 	chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
