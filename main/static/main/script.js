@@ -1,3 +1,5 @@
+var PingChart = null;
+
 function UpdateChart(timeframe) {
   query_length = timeframe.toString();
   query_url = ["/data/", query_length, "/"].join("");
@@ -5,7 +7,7 @@ function UpdateChart(timeframe) {
     method: "GET",
     url: query_url,
     success: function (data) {
-      new Chart(document.getElementById("Ping Chart"), {
+      PingChart = new Chart(document.getElementById("Ping Chart"), {
         type: "line",
         data: {
           labels: data.timestamps,
@@ -96,5 +98,8 @@ $(document).ready(function () {
 });
 
 $(".timeframe-selector").change(function () {
+	if(PingChart!=null){
+		PingChart.destroy();
+	}
   UpdateChart(this.value);
 });
