@@ -4,9 +4,7 @@ from .models import *
 from django.db.models import Avg
 from json import dumps
 from django.utils.timezone import localtime
-import pytz
 
-tz = pytz.timezone("Europe/Paris")
 
 # Main view
 def MainView(request):
@@ -22,8 +20,7 @@ def MainView(request):
 	Statistics = Stats.objects.all().order_by('-id')[0]
 	IsDown = Statistics.ResponseTime >= 59
 
-	LastCheck = Statistics.TimeStamp
-	LastCheck = (LastCheck, tz).strftime("%H:%M")
+	LastCheck = localtime(Statistics.TimeStamp).strftime("%H:%M")
 
 	AverageLoginTime = Stats.objects.exclude(ResponseTime=60.0).aggregate(Avg('ResponseTime'))["ResponseTime__avg"]
 	AverageLoginTime  = round(AverageLoginTime, 1)
@@ -68,8 +65,7 @@ def get_data(request, request_length):
 
 	# Looping over the queryset to process it
 	for _stat in Statistics:
-		Time = _stat.TimeStamp
-		TimeStamps.append((Time, tz).strftime("%H:%M"))
+		TimeStamps.append(localtime(_stat.TimeStamp).strftime("%H:%M"))
 		ResponseTime.append(_stat.ResponseTime)
 		NumberOfAttempts.append(_stat.NumberOfAttempts)
 
