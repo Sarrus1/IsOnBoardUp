@@ -10,7 +10,7 @@ from multiprocessing import Process, Queue
 
 # Initializing the chromedriver
 chrome_options = webdriver.ChromeOptions()
-if settings.DEBUG:
+if not settings.DEBUG:
 	chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
 chrome_options.add_argument("--headless")
 # chrome_options.add_argument("--disable-dev-shm-usage")
@@ -18,7 +18,7 @@ chrome_options.add_argument('--disable-gpu')
 chrome_options.add_argument("--disable-notifications")
 chrome_options.add_argument("--no-sandbox")
 chrome_options.add_argument("--incognito")
-if settings.DEBUG:
+if not settings.DEBUG:
 	driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
 else:
 	driver = webdriver.Chrome(chrome_options=chrome_options)
@@ -27,7 +27,7 @@ else:
 def time_url(driver, url, queue):
 	driver.get(url)
 
-	if settings.DEBUG:
+	if not settings.DEBUG:
 		driver.find_element_by_id("username").send_keys(os.getenv("USERNAME"))
 		driver.find_element_by_id ("password").send_keys(os.getenv("PASSWORD"))
 	else:
