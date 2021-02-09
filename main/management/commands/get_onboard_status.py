@@ -64,7 +64,7 @@ def exec():
 		finally:
 			driver.close()
 	
-	Stat = Stats(TimeStamp=timezone.now(), ResponseTime=total, NumberOfAttempts=attempts)
+	Stat = Stats(TimeStamp=timezone.localtime(timezone.now()), ResponseTime=total, NumberOfAttempts=attempts)
 	Stat.save()
 
 class Command(BaseCommand):
