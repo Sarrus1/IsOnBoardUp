@@ -28,8 +28,8 @@ def time_url(driver, url, queue):
 	driver.get(url)
 
 	if not settings.DEBUG:
-		driver.find_element_by_id("username").send_keys("USERNAME")
-		driver.find_element_by_id ("password").send_keys("PASSWORD")
+		driver.find_element_by_id("username").send_keys(os.getenv("USERNAME"))
+		driver.find_element_by_id ("password").send_keys(os.getenv("PASSWORD"))
 	else:
 		from IsOnBoardUp.auth_tokens import username, password
 		driver.find_element_by_id("username").send_keys(username)
