@@ -8,7 +8,7 @@ $.ajax({
         labels: data.timestamps,
         datasets: [
           {
-            label: "Seconds",
+            label: "secondes",
             backgroundColor: "rgba(34, 211, 90, 0.8)",
             borderColor: "rgba(34, 211, 90, 0.9)",
             pointRadius: false,
@@ -19,23 +19,11 @@ $.ajax({
             fill: true,
             data: data.responsetime,
           },
-					{
-            label: "Number of attempts",
-            backgroundColor: "rgba(66, 120, 255, 0)",
-            borderColor: "rgba(66, 120, 255, 0)",
-            pointRadius: false,
-            pointColor: "#3b8bba",
-            pointStrokeColor: "rgba(60,141,188,1)",
-            pointHighlightFill: "#fff",
-            pointHighlightStroke: "rgba(60,141,188,1)",
-            fill: true,
-            data: data.numberofattempts,
-          },
         ],
       },
       options: {
         responsive: true,
-        aspectRatio: 2.5,
+        aspectRatio: 3,
         title: {
           display: false,
         },
@@ -56,7 +44,7 @@ $.ajax({
               display: true,
               scaleLabel: {
                 display: true,
-                labelString: "Time of query",
+                labelString: "Ping time",
                 fontColor: "#e3e3e3",
               },
               ticks: {
@@ -87,32 +75,34 @@ $.ajax({
   },
 });
 
-// function donutChart() {
-// 	var donut_data=JSON.parse('{{donut_data|safe}}');
-//   new Morris.Donut({
-//     element: "ratio",
-//     data: [
-//       {
-//         label: "Failed ping",
-//         value: JSON.parse("{{donut_data.total_failed}}"),
-//       },
-//       {
-//         label: "Successful pings",
-//         value:
-//           JSON.parse("{{donut_data.total}}") -
-//           JSON.parse("{{donut_data.total_failed}}"),
-//       },
-//     ],
-//     resize: true,
-//     redraw: true,
-//     colors: ["#3A89C9", "#22d25a"],
-//   });
-// }
+function donutChart() {
+  $.ajax({
+    method: "GET",
+    url: "/data/2/",
+    success: function (data) {
+			new Morris.Donut({
+				element: "ratio",
+				data: [
+					{ label: "Failed ping", value: data.total_failed },
+					{ label: "Successful pings", value: data.total - data.total_failed },
+				],
+				resize: true,
+				redraw: true,
+				colors: ["#3A89C9", "#22d25a"],
+			});
+		},
+    error: function (data) {
+      console.log("Error");
+    },
+  });
+}
 
-// $(document).ready(function () {
-//   donutChart();
 
-//   $(window).resize(function () {
-//     window.donutChart.redraw();
-//   });
-// });
+
+$(document).ready(function () {
+  donutChart();
+
+  $(window).resize(function () {
+    window.donutChart.redraw();
+  });
+});

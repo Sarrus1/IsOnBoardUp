@@ -4,5 +4,5 @@ from .views import *
 
 urlpatterns = [
 		path('', MainView),
-		path('data/', get_data)
+		path('data/<int:request_type>/', get_data)
 ]

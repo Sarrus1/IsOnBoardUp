@@ -3,6 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from main.models import *
 from time import strftime
+from django.utils import timezone
 from django.conf import settings
 import os
 
@@ -63,8 +64,7 @@ def exec():
 		finally:
 			driver.close()
 	
-	now = strftime("%H:%M")
-	Stat = Stats(TimeStamp=now, ResponseTime=total)
+	Stat = Stats(TimeStamp=timezone.now(), ResponseTime=total, NumberOfAttempts=attempts)
 	Stat.save()
 
 class Command(BaseCommand):
