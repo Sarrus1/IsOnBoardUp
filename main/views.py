@@ -61,7 +61,7 @@ def get_data(request, request_length):
 		request_length=2016
 	
 	# Generating the queryset
-	Statistics = Stats.objects.all().order_by('id')[-request_length:]
+	Statistics = Stats.objects.all().order_by('-id')[:request_length][::-1]
 
 	# Looping over the queryset to process it
 	for _stat in Statistics:
