@@ -39,27 +39,21 @@ def MainView(request):
 	
 	return render(request, 'main/index.html', data)
 
-def get_data(request, request_type):
-	if request_type == 1:
-		Statistics = Stats.objects.all().order_by('id')[:12]
-		TimeStamps = []
-		ResponseTime = []
-		NumberOfAttempts = []
-		for _stat in Statistics:
-			TimeStamps.append(_stat.TimeStamp.strftime("%H:%M"))
-			ResponseTime.append(_stat.ResponseTime)
-			NumberOfAttempts.append(_stat.NumberOfAttempts)
+def get_data(request, request_length):
+	if request_length>2016:
+		request_length=2016
+	Statistics = Stats.objects.all().order_by('id')[:request_length]
+	TimeStamps = []
+	ResponseTime = []
+	NumberOfAttempts = []
+	for _stat in Statistics:
+		TimeStamps.append(_stat.TimeStamp.strftime("%H:%M"))
+		ResponseTime.append(_stat.ResponseTime)
+		NumberOfAttempts.append(_stat.NumberOfAttempts)
 
-		data = {
-			'timestamps': TimeStamps,
-			'responsetime': ResponseTime,
-			'numberofattempts': NumberOfAttempts
-			}
-	elif request_type == 2:
-		TotalFailed = Stats.objects.filter(ResponseTime=60.0).count()
-		Total = Stats.objects.count()
-		data = {
-			'total_failed': TotalFailed,
-			'total': Total
-			}
+	data = {
+		'timestamps': TimeStamps,
+		'responsetime': ResponseTime,
+		'numberofattempts': NumberOfAttempts
+		}
 	return JsonResponse(data)

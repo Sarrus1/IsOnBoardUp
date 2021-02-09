@@ -30,9 +30,23 @@
 		</div>
 		<div class="row mb-3">
 			<div class="col-sm-8">
-				<div class="chart">
-					<canvas id="Ping Chart"></canvas>
+				<div class="row mb-3">
+					<div class="col-12">
+						<select name="timeframe" id="timeframe-select" class="timeframe-selector custom-select">
+								<option value="12">1 hour</option>
+								<option value="144">12 hours</option>
+								<option value="288">1 day</option>
+								<option value="2016">1 week</option>
+						</select>
+					</div>
 				</div>
+				<div class="row">
+					<div class="col-12">
+						<div class="chart">
+							<canvas id="Ping Chart"></canvas>
+						</div>
+					</div>
+				</div>	
 			</div>
 			<div class="col-sm-4">
 				<div id="ratio" class="morris-chart"></div>
