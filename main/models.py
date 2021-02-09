@@ -1,5 +1,6 @@
 from django.db import models
 
+# Model for the statistics
 class Stats(models.Model):
 	TimeStamp = models.DateTimeField()
 	ResponseTime = models.DecimalField(max_digits=5, decimal_places=1)
@@ -11,6 +12,7 @@ class Stats(models.Model):
 	class Meta:
 		verbose_name_plural = "Stats"
 
+# Model for the number of visitors
 class Visits(models.Model):
 	Visitors = models.IntegerField()
 

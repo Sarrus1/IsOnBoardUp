@@ -4,7 +4,9 @@ from .models import *
 from django.db.models import Avg
 from json import dumps
 
+# Main view
 def MainView(request):
+	# Handle the visitor count
 	try:
 		NumberOfVisitors = Visits.objects.all()[0]
 		NumberOfVisitors.Visitors += 1
@@ -12,13 +14,18 @@ def MainView(request):
 	except:
 		Visits(Visitors=1).save()
 
+	# Handle de values to be displayed on the page
 	Statistics = Stats.objects.all().order_by('-id')[0]
 	IsDown = Statistics.ResponseTime >= 59
+
 	LastCheck = Statistics.TimeStamp.strftime("%H:%M")
+
 	AverageLoginTime = Stats.objects.exclude(ResponseTime=60.0).aggregate(Avg('ResponseTime'))["ResponseTime__avg"]
 	AverageLoginTime  = round(AverageLoginTime, 1)
+	
 	AverageNumberOfRetries = Stats.objects.aggregate(Avg('NumberOfAttempts'))["NumberOfAttempts__avg"]
 	AverageNumberOfRetries = round(AverageNumberOfRetries, 1)
+
 	TotalFailed = Stats.objects.filter(ResponseTime=60.0).count()
 	Total = Stats.objects.count()
 
@@ -27,6 +34,7 @@ def MainView(request):
 			'total': Total
 		}
 	
+	# Putting everything in a dictionnary
 	data = {
 		'isdown': IsDown, 
 		'averagelogin': AverageLoginTime, 
@@ -39,18 +47,27 @@ def MainView(request):
 	
 	return render(request, 'main/index.html', data)
 
+# Secondary view to handle AJAX requests
 def get_data(request, request_length):
-	if request_length>2016:
-		request_length=2016
-	Statistics = Stats.objects.all().order_by('id')[:request_length]
+	# Variables init
 	TimeStamps = []
 	ResponseTime = []
 	NumberOfAttempts = []
+
+	# Making sure there is no query abuse
+	if request_length>2016:
+		request_length=2016
+	
+	# Generating the queryset
+	Statistics = Stats.objects.all().order_by('id')[:request_length]
+
+	# Looping over the queryset to process it
 	for _stat in Statistics:
 		TimeStamps.append(_stat.TimeStamp.strftime("%H:%M"))
 		ResponseTime.append(_stat.ResponseTime)
 		NumberOfAttempts.append(_stat.NumberOfAttempts)
 
+	# Putting everything in a dictionnary
 	data = {
 		'timestamps': TimeStamps,
 		'responsetime': ResponseTime,
