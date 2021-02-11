@@ -94,7 +94,7 @@ function UpdateChart(timeframe) {
 }
 
 $(document).ready(function () {
-  UpdateChart(12);
+  UpdateChart(0);
 });
 
 $(".timeframe-selector").change(function () {
