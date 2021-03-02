@@ -35,7 +35,7 @@ def time_url(driver, url, queue):
 		driver.find_element_by_id("username").send_keys(username)
 		driver.find_element_by_id ("password").send_keys(password)
 	
-	driver.find_element_by_id("j_idt27").click()
+	driver.find_element_by_class_name("bouton-connexion").click()
 	navigation_start = driver.execute_script(
 			"return window.performance.timing.navigationStart")
 	dom_complete = driver.execute_script(
