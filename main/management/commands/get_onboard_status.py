@@ -66,6 +66,10 @@ def exec():
 	
 	Stat = Stats(TimeStamp=timezone.localtime(timezone.now()), ResponseTime=total, NumberOfAttempts=attempts)
 	Stat.save()
+	StatLen = Stats.objects.all().count()
+	if StatLen > 9000:
+		to_delete = Stats.objects.values()[:1].get()
+		Stats.objects.filter(id=to_delete['id']).delete()
 
 class Command(BaseCommand):
 	def handle(self, *args, **options):
