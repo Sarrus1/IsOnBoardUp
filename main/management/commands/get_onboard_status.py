@@ -66,6 +66,7 @@ def exec():
 	
 	Stat = Stats(TimeStamp=timezone.localtime(timezone.now()), ResponseTime=total, NumberOfAttempts=attempts)
 	Stat.save()
+	# Make sure to avoid db overflow
 	StatLen = Stats.objects.all().count()
 	if StatLen > 9000:
 		to_delete = Stats.objects.values()[:1].get()
